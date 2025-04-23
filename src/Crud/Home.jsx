@@ -1,0 +1,114 @@
+import React, { useEffect, useState } from 'react';
+import { empData } from "../Crud/emp_Data";
+
+export default function EmployeeTable() {
+  
+  const [data, setData] = useState([]);
+  const [id,setid]=useState(0);
+  const [name,setname]=useState('');
+  const [classp,setclassp]=useState('');
+  const[age,setage]=useState(0);
+
+  useEffect(() => {
+    setData(empData);
+  }, []);
+
+ const handleDelete=(id)=>{
+        if(id>0){
+          if(window.confirm("are u sure delete !!!!!!")){
+
+            const dt=data.filter(item=>item.id!==id);
+            setData(dt);
+          }
+        }
+  }
+
+  const handleEdit=(id)=>{
+    const dt=data.filter(item=>item.id===id);
+      if(dt!==undefined){
+        setid(id);
+        setname(dt[0].name);
+        setclassp(dt[0].classp);
+        setage(dt[0].age);
+
+
+      }
+  };
+
+  const handlecancle=()=>{
+    setid('');
+    setname('');
+    setclassp('');
+    setage('');
+  }
+
+const handleSave=()=>{
+  const dt=[...data];
+  const newobj={
+    id:empData.length+1,
+    name:name,
+    classp:classp,
+    age:age
+  }
+  dt.push(newobj);
+  setData(dt);
+}
+  return (
+<>
+<div style={{display:'flex' ,justifyContent:'center', marginTop:"10px" ,marginBottom:"10px"}}>
+<div>
+          <label>name: 
+            <input type="text" placeholder=' enter name' onChange={(e)=>setname(e.target.value)} value={name}  />
+          </label>
+         </div>
+
+         <div>
+          <label>class : 
+            <input type="text" placeholder=' enter class' onChange={(e)=>setclassp(e.target.value) }  value={classp}   />
+          </label>
+         </div>
+
+         <div>
+          <label>age: 
+            <input type="text" placeholder=' enter age' onChange={(e)=>setage(e.target.value)} value={age}   />
+          </label>  
+         </div>
+
+   <div>
+    <button className='btn btn-primary' onClick={handleSave}>Save</button>
+    <button className='btn btn-danger' onClick={handlecancle}>Cancle</button>
+   </div>
+    </div>
+    <table className='table'>
+      <thead>
+        <tr>
+          <th>Sr. No</th>
+          <th>Name</th>
+          <th>Class</th>
+          <th>Age</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          data.map((item,index)=>{
+            return(
+              <tr key={index}>
+  <td>{item.id}</td>
+  <td>{item.name}</td>
+  <td>{item.classp}</td>
+  <td>{item.age}</td>
+  <td>
+    <button className='btn btn-primary' onClick={()=>handleEdit(item.id)}>Edit</button>
+    <button className='btn btn-danger' onClick={()=>handleDelete(item.id)}>Delete</button>
+  </td>
+</tr>
+            )
+            
+          })
+}
+      </tbody>
+    </table>
+          </>
+  );
+}
