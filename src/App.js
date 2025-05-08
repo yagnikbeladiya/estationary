@@ -1,39 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
-import Home from './Crud/Home';
-import Api from './API/Api';
-import { useEffect, useState } from 'react';
+import React from 'react';
+import AddTodo from './components/AddTodo'; 
+import Todos from './components/Todos';  
 
-function App() {
-
-  const [data,setdata]=useState([]);
-
-  const getuser=async ()=>{
-    const response = await fetch('  https://api.github.com/users');
-    setdata(await response.json());
-    
-  }
-
-  useEffect(()=>{
-   getuser();
-  },[]);
+export default function App() {
   return (
-  <>
-  <div >{
-    data.map((item)=>{
-       return(
-        <>
-        <p>{item.id}</p>
+    <div className="App">
+      <h1>Todo App</h1>
+      <AddTodo />   
+         <Todos />
+          </div>
 
-        <img src={item.avatar_url} alt={`Avatar of ${item.login}`} width="100" />
-        </>
-       )  })
-    
-    }
-  </div>
-  
-  </> 
   );
 }
-
-export default App;
